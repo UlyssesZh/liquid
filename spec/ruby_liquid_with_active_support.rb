@@ -14,7 +14,7 @@ LiquidSpec.configure do |config|
 end
 
 # Compile a template string into a Liquid::Template
-LiquidSpec.compile do |ctx, source, options|
+LiquidSpec.compile do |_ctx, source, options|
   Liquid::Template.parse(source, **options)
 end
 
@@ -23,7 +23,7 @@ end
 # @param template [Liquid::Template] compiled template
 # @param assigns [Hash] environment variables
 # @param options [Hash] :registers, :strict_errors, :exception_renderer
-LiquidSpec.render do |ctx, template, assigns, options|
+LiquidSpec.render do |_ctx, template, assigns, options|
   registers = Liquid::Registers.new(options[:registers] || {})
 
   context = Liquid::Context.build(

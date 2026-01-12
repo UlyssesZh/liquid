@@ -12,14 +12,14 @@ LiquidSpec.configure do |config|
 end
 
 # Compile a template string into a Liquid::Template
-LiquidSpec.compile do |ctx, source, options|
+LiquidSpec.compile do |_ctx, source, options|
   # Force lax mode
   options = options.merge(error_mode: :lax)
   Liquid::Template.parse(source, **options)
 end
 
 # Render a compiled template with the given context
-LiquidSpec.render do |ctx, template, assigns, options|
+LiquidSpec.render do |_ctx, template, assigns, options|
   registers = Liquid::Registers.new(options[:registers] || {})
 
   context = Liquid::Context.build(
