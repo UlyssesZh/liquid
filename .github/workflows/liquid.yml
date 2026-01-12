@@ -1,5 +1,5 @@
 name: Liquid
-on: [push, pull_request]
+on: [push]
 
 env:
   BUNDLE_JOBS: 4
