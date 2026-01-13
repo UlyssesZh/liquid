@@ -19,14 +19,14 @@ LiquidSpec.configure do |config|
 end
 
 # Compile a template string into a Liquid::Template
-LiquidSpec.compile do |_ctx, source, options|
+LiquidSpec.compile do |ctx, source, options|
   # Force strict mode
   options = { error_mode: :strict }.merge(options)
-  Liquid::Template.parse(source, **options)
+  ctx[:template] = Liquid::Template.parse(source, **options)
 end
 
 # Render a compiled template with the given context
-LiquidSpec.render do |_ctx, template, assigns, options|
+LiquidSpec.render do |ctx, assigns, options|
   registers = Liquid::Registers.new(options[:registers] || {})
 
   context = Liquid::Context.build(
@@ -37,5 +37,5 @@ LiquidSpec.render do |_ctx, template, assigns, options|
 
   context.exception_renderer = options[:exception_renderer] if options[:exception_renderer]
 
-  template.render(context)
+  ctx[:template].render(context)
 end
