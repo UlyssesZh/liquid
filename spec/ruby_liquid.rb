@@ -14,15 +14,14 @@ end
 
 # Compile a template string into a Liquid::Template
 LiquidSpec.compile do |ctx, source, options|
-  Liquid::Template.parse(source, **options)
+  ctx[:template] = Liquid::Template.parse(source, **options)
 end
 
 # Render a compiled template with the given context
-# @param ctx [Hash] adapter context (unused)
-# @param template [Liquid::Template] compiled template
+# @param ctx [Hash] adapter context containing :template
 # @param assigns [Hash] environment variables
 # @param options [Hash] :registers, :strict_errors, :exception_renderer
-LiquidSpec.render do |ctx, template, assigns, options|
+LiquidSpec.render do |ctx, assigns, options|
   registers = Liquid::Registers.new(options[:registers] || {})
 
   context = Liquid::Context.build(
@@ -33,5 +32,5 @@ LiquidSpec.render do |ctx, template, assigns, options|
 
   context.exception_renderer = options[:exception_renderer] if options[:exception_renderer]
 
-  template.render(context)
+  ctx[:template].render(context)
 end
