@@ -22,6 +22,7 @@ jobs:
             }
           - { ruby: 4.0, allowed-failure: false, rubyopt: "--yjit" }
           - { ruby: 4.0, allowed-failure: false, rubyopt: "--zjit" }
+          - { ruby: truffleruby, allowed-failure: false }
 
           # Head can have failures due to being in development
           - { ruby: head, allowed-failure: true }
