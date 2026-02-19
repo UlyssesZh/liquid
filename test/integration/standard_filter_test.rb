@@ -164,6 +164,13 @@ class StandardFiltersTest < Minitest::Test
     assert_equal(['A', 'Z'], @filters.split('A1Z', 1))
   end
 
+  def test_squish_filter
+    assert_equal("foo bar boo", Liquid::Template.parse(%Q({{ " foo   bar    
+\t   boo   " | squish }})).render)
+    assert_equal("", Liquid::Template.parse('{{ nil | squish }}').render)
+    assert_equal("", Liquid::Template.parse('{{ " " | squish }}').render)
+  end
+
   def test_escape
     assert_equal('&lt;strong&gt;', @filters.escape('<strong>'))
     assert_equal('1', @filters.escape(1))
