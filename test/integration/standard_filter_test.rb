@@ -165,7 +165,7 @@ class StandardFiltersTest < Minitest::Test
   end
 
   def test_squish_filter
-    assert_equal("foo bar boo", Liquid::Template.parse(%Q({{ " foo   bar    
+    assert_equal("foo bar boo", Liquid::Template.parse(%({{ " foo   bar
 \t   boo   " | squish }})).render)
     assert_equal("", Liquid::Template.parse('{{ nil | squish }}').render)
     assert_equal("", Liquid::Template.parse('{{ " " | squish }}').render)
