@@ -8,10 +8,19 @@ module Liquid
     MAX_I32 = (1 << 31) - 1
     private_constant :MAX_I32
 
-    MIN_I64 = -(1 << 63)
-    MAX_I64 = (1 << 63) - 1
-    I64_RANGE = MIN_I64..MAX_I64
-    private_constant :MIN_I64, :MAX_I64, :I64_RANGE
+    supports_64bit_indices = begin
+      [][1 << 33, 1 << 33]
+      true
+    rescue RangeError
+      false
+    end
+
+    INDEX_RANGE = if supports_64bit_indices
+      (-(1 << 63))..((1 << 63) - 1)
+    else
+      (-(1 << 31))..((1 << 31) - 1)
+    end
+    private_constant :INDEX_RANGE
 
     HTML_ESCAPE = {
       '&' => '&amp;',
@@ -214,11 +223,11 @@ module Liquid
           Utils.to_s(input).slice(offset, length) || ''
         end
       rescue RangeError
-        if I64_RANGE.cover?(length) && I64_RANGE.cover?(offset)
+        if INDEX_RANGE.cover?(length) && INDEX_RANGE.cover?(offset)
           raise # unexpected error
         end
-        offset = offset.clamp(I64_RANGE)
-        length = length.clamp(I64_RANGE)
+        offset = offset.clamp(INDEX_RANGE)
+        length = length.clamp(INDEX_RANGE)
         retry
       end
     end
