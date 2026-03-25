@@ -1181,6 +1181,8 @@ class StandardFiltersTest < Minitest::Test
   end
 
   def test_all_filters_never_raise_non_liquid_exception
+    skip("too slow on non-CRuby due to many exceptions") unless RUBY_ENGINE == 'ruby'
+
     test_drop = TestDrop.new(value: "test")
     test_drop.context = Context.new
     test_enum = TestEnumerable.new
